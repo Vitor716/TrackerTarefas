@@ -7,6 +7,7 @@ import org.example.trackerdeatividade.dto.saida.DadosTarefa;
 import org.example.trackerdeatividade.model.Status;
 import org.example.trackerdeatividade.model.Tarefa;
 import org.example.trackerdeatividade.repository.TarefaRepository;
+import org.example.trackerdeatividade.util.TarefaValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,9 @@ public class TarefaService {
 
     @Autowired
     private TarefaRepository repository;
+
+    @Autowired
+    private TarefaValidator validator;
 
     public void cadastrar(DadosCadastroTarefa tarefa) {
         repository.save(new Tarefa(tarefa));;
@@ -34,7 +38,7 @@ public class TarefaService {
     public void atualizarTarefa(DadosAtualizarTarefa tarefa) {
         Tarefa dados = buscarTarefa(tarefa.id());
 
-        validaAlteracoes(tarefa, dados);
+        validator.validaAlteracoes(tarefa, dados);
 
         repository.save(dados);
     }
@@ -45,16 +49,6 @@ public class TarefaService {
         tarefa.setStatus(Status.CONCLUIDO);
 
         repository.save(tarefa);
-    }
-
-    private static void validaAlteracoes(DadosAtualizarTarefa tarefa, Tarefa dados) {
-        if(tarefa.descricao() != null) {
-            dados.setDescricao(tarefa.descricao());
-        }
-
-        if(tarefa.dataConclusao() != null) {
-            dados.setDataConclusao(tarefa.dataConclusao());
-        }
     }
 
     public Tarefa buscarTarefa(Long id) {
