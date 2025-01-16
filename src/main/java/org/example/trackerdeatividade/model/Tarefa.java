@@ -27,12 +27,18 @@ public class Tarefa {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    private LocalDate dataConclusao;
+    private LocalDate dataInicio;
+
+    private LocalDate dataTermino;
+
+    private Boolean ativo;
 
     public Tarefa(DadosCadastroTarefa tarefa) {
         this.titulo = tarefa.titulo();
+        this.status = Status.PENDENTE;
         this.descricao = tarefa.descricao();
-        this.status = tarefa.status();
-        this.dataConclusao = tarefa.dataConclusao();
+        this.dataInicio = tarefa.dataInicio();
+        this.dataTermino = tarefa.dataTermino();
+        this.ativo = true;
     }
 }

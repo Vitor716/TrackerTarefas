@@ -12,6 +12,11 @@ public record DadosAtualizarTarefa(
         String descricao,
 
         @JsonFormat(pattern = "dd-MM-yyyy")
-        LocalDate dataConclusao
+        LocalDate dataInicio,
+
+        @JsonFormat(pattern = "dd-MM-yyyy")
+        LocalDate dataTermino,
+
+        Boolean ativo
 ) {
 }

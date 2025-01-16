@@ -15,9 +15,20 @@ public record DadosTarefa(
 
         Status status,
 
-        LocalDate dataConclusao
+        LocalDate dataInicio,
+
+        LocalDate dataTermino,
+
+        Boolean ativo
 ) {
     public DadosTarefa (Tarefa tarefa) {
-        this(tarefa.getId(), tarefa.getTitulo(), tarefa.getDescricao(), tarefa.getStatus(), tarefa.getDataConclusao());
+        this(
+            tarefa.getId(),
+            tarefa.getTitulo(),
+            tarefa.getDescricao(),
+            tarefa.getStatus(),
+            tarefa.getDataInicio(),
+            tarefa.getDataTermino(),
+            tarefa.getAtivo());
     }
 }
