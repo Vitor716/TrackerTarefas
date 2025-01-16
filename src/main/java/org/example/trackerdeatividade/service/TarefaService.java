@@ -24,11 +24,16 @@ public class TarefaService {
     private TarefaValidator validator;
 
     public void cadastrar(DadosCadastroTarefa tarefa) {
-        repository.save(new Tarefa(tarefa));;
+        validator.validarCadastro(tarefa);
+        repository.save(new Tarefa(tarefa));
     }
 
     public List<DadosTarefa> buscarTarefasPorTitulo(String titulo) {
         return repository.findByTitulo(titulo);
+    }
+
+    public List<DadosTarefa> buscarTarefasPorStatus(String status) {
+        return repository.findByStatus(status);
     }
 
     public Optional<DadosTarefa> buscarTarefaPorId(Long id) {
@@ -37,16 +42,21 @@ public class TarefaService {
 
     public void atualizarTarefa(DadosAtualizarTarefa tarefa) {
         Tarefa dados = buscarTarefa(tarefa.id());
-
-        validator.validaAlteracoes(tarefa, dados);
+        validator.validarAlteracoes(tarefa, dados);
 
         repository.save(dados);
     }
 
-    public void ConcluirTarefa(Long id) {
+    public void concluirTarefa(Long id) {
         Tarefa tarefa = buscarTarefa(id);
-
         tarefa.setStatus(Status.CONCLUIDO);
+
+        repository.save(tarefa);
+    }
+
+    public void inativarTarefa(Long id) {
+        Tarefa tarefa = buscarTarefa(id);
+        tarefa.setAtivo(false);
 
         repository.save(tarefa);
     }

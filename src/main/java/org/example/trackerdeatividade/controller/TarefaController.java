@@ -36,6 +36,11 @@ public class TarefaController {
         return service.buscarTarefaPorId(id);
     }
 
+    @GetMapping("/status/{status}")
+    public List<DadosTarefa> buscarTarefasPorStatus(@PathVariable String status) {
+        return service.buscarTarefasPorStatus(status);
+    }
+
     @PutMapping
     @Transactional
     public void atualizarTarefa(@RequestBody @Valid DadosAtualizarTarefa tarefa) {
@@ -44,7 +49,13 @@ public class TarefaController {
 
     @PutMapping("/{id}")
     @Transactional
-    public void ConcluirTarefa(@PathVariable Long id){
-        service.ConcluirTarefa(id);
+    public void concluirTarefa(@PathVariable Long id){
+        service.concluirTarefa(id);
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public void inativarTarefa(@PathVariable Long id){
+        service.inativarTarefa(id);
     }
 }

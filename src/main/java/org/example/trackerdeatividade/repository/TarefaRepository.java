@@ -10,4 +10,6 @@ import java.util.List;
 @Repository
 public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
     List<DadosTarefa> findByTitulo(String titulo);
+
+    List<DadosTarefa> findByStatus(String status);
 }
