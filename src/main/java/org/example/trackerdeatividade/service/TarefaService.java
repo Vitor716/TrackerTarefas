@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -49,17 +48,27 @@ public class TarefaService {
         repository.save(dados);
     }
 
+    public void pendenciar(Long id){
+        Tarefa tarefa = buscar(id);
+        tarefa.setStatus(Status.PENDENTE);
+        repository.save(tarefa);
+    }
+
     public void concluir(Long id) {
         Tarefa tarefa = buscar(id);
         tarefa.setStatus(Status.CONCLUIDO);
+        repository.save(tarefa);
+    }
 
+    public void andamento(Long id) {
+        Tarefa tarefa = buscar(id);
+        tarefa.setStatus(Status.EM_ANDAMENTO);
         repository.save(tarefa);
     }
 
     public void inativar(Long id) {
         Tarefa tarefa = buscar(id);
         tarefa.setAtivo(false);
-
         repository.save(tarefa);
     }
 

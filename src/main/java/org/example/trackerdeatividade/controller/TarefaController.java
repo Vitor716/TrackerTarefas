@@ -57,10 +57,22 @@ public class TarefaController {
         service.atualizar(tarefa);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/concluir/{id}")
     @Transactional
     public void concluir(@PathVariable Long id){
         service.concluir(id);
+    }
+
+    @PutMapping("/pendenciar/{id}")
+    @Transactional
+    public void pendenciar(@PathVariable Long id){
+        service.pendenciar(id);
+    }
+
+    @PutMapping("/andamento/{id}")
+    @Transactional
+    public void andamento(@PathVariable Long id){
+        service.andamento(id);
     }
 
     @DeleteMapping("/{id}")
