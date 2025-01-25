@@ -1,6 +1,5 @@
 package org.example.trackerdeatividade.service;
 
-import jakarta.persistence.EntityNotFoundException;
 import org.example.trackerdeatividade.dto.entrada.DadosAtualizarTarefa;
 import org.example.trackerdeatividade.dto.entrada.DadosCadastroTarefa;
 import org.example.trackerdeatividade.dto.saida.DadosTarefa;
@@ -11,8 +10,11 @@ import org.example.trackerdeatividade.util.TarefaValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TarefaService {
@@ -28,40 +30,48 @@ public class TarefaService {
         repository.save(new Tarefa(tarefa));
     }
 
-    public List<DadosTarefa> buscarTarefasPorTitulo(String titulo) {
+    public List<DadosTarefa> buscarPorTitulo(String titulo) {
         return repository.findByTitulo(titulo);
     }
 
-    public List<DadosTarefa> buscarTarefasPorStatus(String status) {
+    public List<DadosTarefa> buscarPorStatus(String status) {
         return repository.findByStatus(status);
     }
 
-    public Optional<DadosTarefa> buscarTarefaPorId(Long id) {
+    public Optional<DadosTarefa> buscarPorId(Long id) {
         return repository.findById(id).map(DadosTarefa::new);
     }
 
-    public void atualizarTarefa(DadosAtualizarTarefa tarefa) {
-        Tarefa dados = buscarTarefa(tarefa.id());
+    public void atualizar(DadosAtualizarTarefa tarefa) {
+        Tarefa dados = buscar(tarefa.id());
         validator.validarAlteracoes(tarefa, dados);
 
         repository.save(dados);
     }
 
-    public void concluirTarefa(Long id) {
-        Tarefa tarefa = buscarTarefa(id);
+    public void concluir(Long id) {
+        Tarefa tarefa = buscar(id);
         tarefa.setStatus(Status.CONCLUIDO);
 
         repository.save(tarefa);
     }
 
-    public void inativarTarefa(Long id) {
-        Tarefa tarefa = buscarTarefa(id);
+    public void inativar(Long id) {
+        Tarefa tarefa = buscar(id);
         tarefa.setAtivo(false);
 
         repository.save(tarefa);
     }
 
-    public Tarefa buscarTarefa(Long id) {
+    public List<DadosTarefa> buscarTodas() {
+        return repository.findAll().stream().map(DadosTarefa::new).collect(Collectors.toList());
+    }
+
+    public List<DadosTarefa> buscarPorDataInicio(LocalDate dataInicio) {
+        return repository.findByDataInicio(dataInicio);
+    }
+
+    public Tarefa buscar(Long id) {
         return repository.getReferenceById(id);
     }
 }

@@ -5,11 +5,11 @@ import jakarta.validation.Valid;
 import org.example.trackerdeatividade.dto.entrada.DadosAtualizarTarefa;
 import org.example.trackerdeatividade.dto.entrada.DadosCadastroTarefa;
 import org.example.trackerdeatividade.dto.saida.DadosTarefa;
-import org.example.trackerdeatividade.model.Tarefa;
 import org.example.trackerdeatividade.service.TarefaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,36 +26,46 @@ public class TarefaController {
         service.cadastrar(dados);
     }
 
+    @GetMapping()
+    public List<DadosTarefa> listar() {
+        return service.buscarTodas();
+    }
+
+    @GetMapping("/dataInicio/{dataInicio}")
+    public List<DadosTarefa> buscarPorDataInicio(@PathVariable LocalDate dataInicio) {
+        return service.buscarPorDataInicio(dataInicio);
+    }
+
     @GetMapping("/titulo/{titulo}")
     public List<DadosTarefa> buscarTarefasPorTitulo(@PathVariable String titulo) {
-        return service.buscarTarefasPorTitulo(titulo);
+        return service.buscarPorTitulo(titulo);
     }
 
     @GetMapping("/id/{id}")
-    public Optional<DadosTarefa> buscarTarefaPorId(@PathVariable Long id) {
-        return service.buscarTarefaPorId(id);
+    public Optional<DadosTarefa> buscarPorId(@PathVariable Long id) {
+        return service.buscarPorId(id);
     }
 
     @GetMapping("/status/{status}")
-    public List<DadosTarefa> buscarTarefasPorStatus(@PathVariable String status) {
-        return service.buscarTarefasPorStatus(status);
+    public List<DadosTarefa> buscarPorStatus(@PathVariable String status) {
+        return service.buscarPorStatus(status);
     }
 
     @PutMapping
     @Transactional
-    public void atualizarTarefa(@RequestBody @Valid DadosAtualizarTarefa tarefa) {
-        service.atualizarTarefa(tarefa);
+    public void atualizar(@RequestBody @Valid DadosAtualizarTarefa tarefa) {
+        service.atualizar(tarefa);
     }
 
     @PutMapping("/{id}")
     @Transactional
-    public void concluirTarefa(@PathVariable Long id){
-        service.concluirTarefa(id);
+    public void concluir(@PathVariable Long id){
+        service.concluir(id);
     }
 
     @DeleteMapping("/{id}")
     @Transactional
-    public void inativarTarefa(@PathVariable Long id){
-        service.inativarTarefa(id);
+    public void inativar(@PathVariable Long id){
+        service.inativar(id);
     }
 }
